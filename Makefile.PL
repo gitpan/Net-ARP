@@ -36,7 +36,7 @@ else
 
 WriteMakefile(
     NAME              => 'Net::ARP',
-    VERSION           => '0.2',
+    VERSION           => '0.4',
     AUTHOR            => 'Bastian Ballmann',
     DEFINE            => $flags, 
     OBJECT            => $objects	      

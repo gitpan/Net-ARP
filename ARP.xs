@@ -3,7 +3,7 @@ Perl ARP Extension
 Create and send an arp packet
 
 Programmed by Bastian Ballmann
-Last update: 30.09.2004
+Last update: 31.12.2004
 
 This program is free software; you can redistribute 
 it and/or modify it under the terms of the 
@@ -104,7 +104,10 @@ send_packet(dev, sip, dip, smac, dmac, type)
 	  arp->opcode = htons(op);                                               // ARP operation
 	  memcpy(arp->source_add,(u_char *)ether_aton(smac),ETH_ALEN);           // Source MAC
 	  *(u_long *)arp->source_ip = inet_addr(sip);                            // Source IP
-	  memcpy(arp->dest_add,(u_char *)ether_aton(dmac),ETH_ALEN);             // Destination MAC
+
+	  if(strcmp(dmac,"ff:ff:ff:ff:ff:ff"))
+          	memcpy(arp->dest_add,(u_char *)ether_aton(dmac),ETH_ALEN);       // Destination MAC
+
 	  *(u_long *)arp->dest_ip = inet_addr(dip);                              // Destination IP
 
 
