@@ -1,5 +1,12 @@
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
+Changes between 0.4 and 0.5
+
+Bugfixes in function send_packet 
+by Jonas Nagel fireball@zerouptime.ch
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
 Changes between 0.3 and 0.4
 
 ARP broadcast

@@ -28,7 +28,6 @@ int send_packet_linux(u_char *dev, u_char *packet, u_int packetsize)
   int sock;
 
   if( (strlen(dev) == 0) ||
-      (strlen(packet) == 0) ||
       (packetsize == 0) )
     return -1;
 

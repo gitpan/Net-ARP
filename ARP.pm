@@ -41,7 +41,7 @@ our @EXPORT = qw(
 	
 );
 
-our $VERSION = '0.4';
+our $VERSION = '0.5';
 
 require XSLoader;
 XSLoader::load('Net::ARP', $VERSION);
@@ -111,7 +111,7 @@ get the mac address of an ethernet interface or ip address.
 =head1 AUTHOR
 
  Bastian Ballmann [ Crazydj@chaostal.de ]
- http://www.crazydj.de
+ http://www.datenterrorist.de
 
 =head1 COPYRIGHT AND LICENSE
 

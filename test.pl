@@ -23,13 +23,6 @@ use Net::Pcap;
 my $errbuf;
 my $dev = Net::Pcap::lookupdev(\$errbuf);
 
-#Net::ARP::send_packet($dev,                           # network interface
-#		      '127.0.0.1',                    # source ip
-#	              '127.0.0.1',                    # destination ip
-#		      'aa:bb:cc:aa:bb:cc',            # source mac
-#	              'aa:bb:cc:aa:bb:cc',            # destination mac
-#	              'reply');                       # ARP operation 
-
 Net::ARP::send_packet($dev,                           # network interface
 		      '127.0.0.1',                    # source ip
 	              '127.0.0.1',                    # destination ip

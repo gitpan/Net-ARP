@@ -32,12 +32,11 @@ int send_packet_bsd(u_char *dev, u_char *packet, u_int packetsize)
   char bpfdev[10];
 
   if( (strlen(dev) == 0) ||
-      (strlen(packet) == 0) ||
       (packetsize == 0) )
     return -1;
 
   // Open a bpf device
-  for(i = 0; i < 3; i++)
+  for(i = 0; i < 9; i++)
     {
       sprintf(bpfdev,"/dev/bpf%d",i);
       if((bpffd = open(bpfdev,O_WRONLY)) > 0)
