@@ -4,7 +4,7 @@ Get the MAC address of an interface
 Linux code
 
 Programmed by Bastian Ballmann
-Last update: 06.06.2004
+Last update: 01.12.2004
 
 This program is free software; you can redistribute 
 it and/or modify it under the terms of the 
@@ -22,14 +22,21 @@ See the GNU General Public License for more details.
 #include <net/ethernet.h>    
 #include <net/if.h>
 
-void get_mac_linux(u_char *dev, char *mac)
+int get_mac_linux(u_char *dev, char *mac)
 {
   int sock;
   struct ifreq iface;
   struct sockaddr_in *addr;
   struct ether_addr ether;
   
-  strcpy(mac,"unkown");
+  if(strlen(mac) > 0)
+    strcpy(mac,"unkown");
+  else
+    return -1;
+
+  if(strlen(dev) == 0)
+    return -1;
+  
   strcpy(iface.ifr_name,dev);
   
   // Open a socket
@@ -57,4 +64,6 @@ void get_mac_linux(u_char *dev, char *mac)
 		  iface.ifr_hwaddr.sa_data[5] & 0xff);	
 	}
     }
+
+  return 0;
 }

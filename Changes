@@ -1,4 +1,14 @@
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Changes between 0.2 and 0.3
+
+Check in all functions if we got all parameter we need
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
 Changes between 0.1 and 0.2
 
 Alexander Mueller visus@portsonline.net updated the arp lookup 
 function for linux to make use of the proc fs.
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

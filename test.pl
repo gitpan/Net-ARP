@@ -21,8 +21,8 @@ use Net::ARP;
 use Net::Pcap;
 
 my $errbuf;
-
-my $dev = Net::Pcap::lookupdev(\$errbuf);
+#my $dev = Net::Pcap::lookupdev(\$errbuf);
+my $dev = "";
 
 Net::ARP::send_packet($dev,                           # network interface
 		      '127.0.0.1',                    # source ip
@@ -34,6 +34,5 @@ Net::ARP::send_packet($dev,                           # network interface
 Net::ARP::get_mac($dev,$mac);
 print "MAC $mac\n";
 Net::ARP::arp_lookup($dev,"192.168.1.1",$mac);
-print "192.168.1.1 has got mac $mac\n";
-
+print "192.168.2.1 has got mac $mac\n";
 

@@ -4,7 +4,7 @@ Send the packet
 BSD code
 
 Programmed by Bastian Ballmann
-Last update: 17.01.2004
+Last update: 01.12.2004
 
 This program is free software; you can redistribute 
 it and/or modify it under the terms of the 
@@ -26,10 +26,15 @@ See the GNU General Public License for more details.
 #include <net/if.h>
 #include "arp.h"
 
-void send_packet_bsd(u_char *dev, u_char *packet, u_int packetsize)
+int send_packet_bsd(u_char *dev, u_char *packet, u_int packetsize)
 {
   int bpffd, i;
   char bpfdev[10];
+
+  if( (strlen(dev) == 0) ||
+      (strlen(packet) == 0) ||
+      (packetsize == 0) )
+    return -1;
 
   // Open a bpf device
   for(i = 0; i < 3; i++)
@@ -58,4 +63,6 @@ void send_packet_bsd(u_char *dev, u_char *packet, u_int packetsize)
       flock(bpffd,LOCK_UN);
       close(bpffd);
     }
+
+  return 0;
 }

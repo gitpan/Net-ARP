@@ -4,7 +4,7 @@ Lookup the MAC address of an ip address
 BSD code
 
 Programmed by Bastian Ballmann
-Last update: 04.01.2004
+Last update: 01.12.2004
 
 This program is free software; you can redistribute 
 it and/or modify it under the terms of the 
@@ -37,6 +37,15 @@ int arp_lookup_bsd(u_char *dev, u_char *ip, char *mac)
   int mib[6];
   size_t needed;
   char *lim, *buf, *next;
+
+  if(strlen(mac) > 0)
+    strcpy(mac,"unkown");
+  else
+    return -1;
+
+  if( (strlen(dev) == 0) ||
+      (strlen(ip) == 0) )
+    return -1;
 
   strcpy(mac,"unknown");
 

@@ -4,7 +4,7 @@ Send the packet
 Linux code
 
 Programmed by Bastian Ballmann
-Last update: 24.07.2004
+Last update: 01.12.2004
 
 This program is free software; you can redistribute 
 it and/or modify it under the terms of the 
@@ -22,10 +22,15 @@ See the GNU General Public License for more details.
 #include <sys/socket.h>      
 #include "arp.h"
 
-void send_packet_linux(u_char *dev, u_char *packet, u_int packetsize)
+int send_packet_linux(u_char *dev, u_char *packet, u_int packetsize)
 {
   struct sockaddr addr;
   int sock;
+
+  if( (strlen(dev) == 0) ||
+      (strlen(packet) == 0) ||
+      (packetsize == 0) )
+    return -1;
 
   // Create socket descriptor
   if( ( sock = socket(AF_INET,SOCK_TYPE,htons(ETH_P_ALL))) < 0 ) 
@@ -43,4 +48,5 @@ void send_packet_linux(u_char *dev, u_char *packet, u_int packetsize)
     }
 
   close(sock);
+  return 0;
 }

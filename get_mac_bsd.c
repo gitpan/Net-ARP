@@ -4,7 +4,7 @@ Get the MAC address of an interface
 BSD code
 
 Programmed by Bastian Ballmann
-Last update: 06.06.2004
+Last update: 01.12.2004
 
 This program is free software; you can redistribute 
 it and/or modify it under the terms of the 
@@ -23,9 +23,17 @@ See the GNU General Public License for more details.
 #include <sys/socket.h>
 #include <ifaddrs.h>
 
-char get_mac_bsd(u_char *dev, char *mac)
+int get_mac_bsd(u_char *dev, char *mac)
 {
   struct ifaddrs *iface;
+
+  if(strlen(mac) > 0)
+    strcpy(mac,"unkown");
+  else
+    return -1;
+
+  if(strlen(dev) == 0)
+    return -1;
 
   strcpy(mac,"unkown");
   getifaddrs(&iface);
@@ -49,4 +57,6 @@ char get_mac_bsd(u_char *dev, char *mac)
       
       iface = iface->ifa_next;	
     }
+
+  return 0;
 }
