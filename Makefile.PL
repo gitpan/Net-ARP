@@ -2,7 +2,7 @@
 # Perl ARP Extension makefile
 #
 # Programmed by Bastian Ballmann
-# Last update: 30.11.2004
+# Last update: 23.11.2005
 #
 # This program is free software; you can redistribute 
 # it and/or modify it under the terms of the 
@@ -17,6 +17,15 @@
 
 use ExtUtils::MakeMaker;
 use Config;
+
+BEGIN {
+      eval { require Net::Pcap };
+
+      if($@)
+      {
+          print "Module Net::Pcap is required for make test!\n";
+      }
+}
 
 if($Config{'osname'} =~ /linux/i)
 {
@@ -36,7 +45,7 @@ else
 
 WriteMakefile(
     NAME              => 'Net::ARP',
-    VERSION           => '0.5',
+    VERSION           => '0.6',
     AUTHOR            => 'Bastian Ballmann',
     DEFINE            => $flags, 
     OBJECT            => $objects	      

@@ -4,7 +4,7 @@ Lookup the MAC address of an ip address
 Linux code
 
 Programmed by Bastian Ballmann and Alexander Mueller
-Last update: 01.12.2004
+Last update: 23.11.2005
 
 This program is free software; you can redistribute 
 it and/or modify it under the terms of the 
@@ -64,4 +64,6 @@ int arp_lookup_linux(char *dev, char *ip, char *mac)
 	  strcpy(mac, "unknown");
 	}
     }
+
+    fclose(fp);
 }
