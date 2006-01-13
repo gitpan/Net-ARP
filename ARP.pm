@@ -41,7 +41,7 @@ our @EXPORT = qw(
 	
 );
 
-our $VERSION = '0.6';
+our $VERSION = '0.7';
 
 require XSLoader;
 XSLoader::load('Net::ARP', $VERSION);

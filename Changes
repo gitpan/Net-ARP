@@ -1,5 +1,11 @@
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
+Changes between 0.6 and 0.7
+
+arp_lookup bugfix by Jeff Pinyan
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
 Changes between 0.5 and 0.6
 
 Filedescriptor Bugfixes in arp_lookup 

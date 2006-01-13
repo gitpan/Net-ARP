@@ -3,7 +3,7 @@ Perl ARP Extension
 Create and send an arp packet
 
 Programmed by Bastian Ballmann
-Last update: 31.12.2004
+Last update: 13.01.2006
 
 This program is free software; you can redistribute 
 it and/or modify it under the terms of the 
@@ -129,7 +129,7 @@ get_mac(dev, mac)
 	unsigned char *dev;
 	unsigned char *mac;
 	CODE:
-          char tmp[20];
+          char tmp[20] = "unknown";
 
 	  if(SOCK_TYPE == SOCK_RAW)
 	  {
@@ -152,7 +152,7 @@ arp_lookup(dev, ip, mac)
 	unsigned char *ip;
 	unsigned char *mac;
 	CODE:
-	  char tmp[20];
+	  char tmp[20] = "unknown";
 
 	  if(SOCK_TYPE == SOCK_RAW)
 	  {
