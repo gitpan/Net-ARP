@@ -1,5 +1,12 @@
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
+Changes between 0.7 and 0.8
+
+Fixed typo in return value of arp_lookup() and get_mac()
+Fixed a segfault in send_packet()
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
 Changes between 0.6 and 0.7
 
 arp_lookup bugfix by Jeff Pinyan

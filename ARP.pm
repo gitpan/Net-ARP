@@ -2,7 +2,7 @@
 # Perl ARP Extension
 #
 # Programmed by Bastian Ballmann
-# Last update: 30.11.2004
+# Last update: 09.02.2006
 #
 # This program is free software; you can redistribute 
 # it and/or modify it under the terms of the 
@@ -41,7 +41,7 @@ our @EXPORT = qw(
 	
 );
 
-our $VERSION = '0.7';
+our $VERSION = '0.8';
 
 require XSLoader;
 XSLoader::load('Net::ARP', $VERSION);
@@ -95,14 +95,16 @@ get the mac address of an ethernet interface or ip address.
   Net::ARP::get_mac("eth0",$mac);
 
   This gets the MAC address of the eth0 interface and stores 
-  it in the variable $mac.
+  it in the variable $mac. The return value is "unknown" if
+  the mac cannot be looked up.
 
 =item B<arp_lookup()>
 
   Net::ARP::arp_lookup($dev,"192.168.1.1",$mac);
 
   This looks up the MAC address for the ip address 192.168.1.1
-  and stores it in the variable $mac.
+  and stores it in the variable $mac. The return value is 
+  "unknown" if the mac cannot be looked up.
 
 =head1 SEE ALSO
 

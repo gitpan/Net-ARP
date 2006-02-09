@@ -4,7 +4,7 @@ Get the MAC address of an interface
 Linux code
 
 Programmed by Bastian Ballmann
-Last update: 01.12.2004
+Last update: 09.02.2006
 
 This program is free software; you can redistribute 
 it and/or modify it under the terms of the 
@@ -30,7 +30,7 @@ int get_mac_linux(u_char *dev, char *mac)
   struct ether_addr ether;
   
   if(strlen(mac) > 0)
-    strcpy(mac,"unkown");
+    strcpy(mac,"unknown");
   else
     return -1;
 

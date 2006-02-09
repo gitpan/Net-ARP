@@ -3,7 +3,7 @@ Perl ARP Extension
 Create and send an arp packet
 
 Programmed by Bastian Ballmann
-Last update: 13.01.2006
+Last update: 09.02.2006
 
 This program is free software; you can redistribute 
 it and/or modify it under the terms of the 
@@ -33,7 +33,7 @@ See the GNU General Public License for more details.
 
 MODULE = Net::ARP		PACKAGE = Net::ARP		
 
-void
+int
 send_packet(dev, sip, dip, smac, dmac, type)
 	unsigned char *dev;
 	unsigned char *sip;
@@ -89,6 +89,31 @@ send_packet(dev, sip, dip, smac, dmac, type)
 	  else
 	  {
 	    op = ARPOP_REPLY;
+	  }
+
+	  if(smac == NULL)
+	  {
+	    printf("Parameter smac is NULL! Terminating.\n");
+	    exit(1);
+	  }
+
+	  if(dmac == NULL)
+	  {
+	    printf("Parameter dmac is NULL! Terminating.\n");
+	    exit(1);
+	  }
+
+          // Found a dollar sign?
+	  if(strchr(smac,36))
+	  {
+	    printf("Found a $ char in smac! Terminating.\n");
+	    exit(1);
+	  }
+
+	  if(strchr(dmac,36))
+	  {
+	    printf("Found a $ char in dmac! Terminating.\n");
+	    exit(1);
 	  }
 
 	  // Ethernet header
