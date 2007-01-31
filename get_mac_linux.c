@@ -18,6 +18,9 @@ FOR A PARTICULAR PURPOSE.
 See the GNU General Public License for more details. 
 */
 
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <sys/ioctl.h>
 #include <net/ethernet.h>    
 #include <net/if.h>
@@ -43,7 +46,7 @@ int get_mac_linux(u_char *dev, char *mac)
   if((sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
     {
       perror("socket");
-      exit(1);
+      return -1;
     }
   else
     {
@@ -51,7 +54,7 @@ int get_mac_linux(u_char *dev, char *mac)
       if((ioctl(sock, SIOCGIFHWADDR, &iface)) < 0)
 	{
 	  perror("ioctl SIOCGIFHWADDR");
-	  exit(1);
+	  return -1;
 	}
       else
 	{

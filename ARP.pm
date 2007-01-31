@@ -2,7 +2,7 @@
 # Perl ARP Extension
 #
 # Programmed by Bastian Ballmann
-# Last update: 09.02.2006
+# Last update: 31.01.2007
 #
 # This program is free software; you can redistribute 
 # it and/or modify it under the terms of the 
@@ -41,7 +41,7 @@ our @EXPORT = qw(
 	
 );
 
-our $VERSION = '0.8';
+our $VERSION = '1.0';
 
 require XSLoader;
 XSLoader::load('Net::ARP', $VERSION);
@@ -65,11 +65,22 @@ ARP - Perl extension for creating ARP packets
 	                'aa:bb:cc:aa:bb:cc',  # Destinaton MAC
 	                'reply');             # ARP operation
 
-Net::ARP::get_mac("eth0",$mac);
+$mac = Net::ARP::get_mac("eth0");
+
 print "$mac\n";
 
-Net::ARP::arp_lookup($dev,"192.168.1.1",$mac);
+$mac = Net::ARP::arp_lookup($dev,"192.168.1.1");
+
 print "192.168.1.1 has got mac $mac\n";
+
+
+=head2 IMPORTANT
+
+Version 1.0 will break with the API of PRE-1.0 versions, 
+because the return value of arp_lookup() and get_mac()
+will no longer be passed as parameter, but returned!
+I hope this decision is ok as long as we get a cleaner and more perlish API.
+
 
 =head2 DESCRIPTION
 
@@ -92,7 +103,7 @@ get the mac address of an ethernet interface or ip address.
 
 =item B<get_mac()>
 
-  Net::ARP::get_mac("eth0",$mac);
+  $mac = Net::ARP::get_mac("eth0");
 
   This gets the MAC address of the eth0 interface and stores 
   it in the variable $mac. The return value is "unknown" if
@@ -100,7 +111,7 @@ get the mac address of an ethernet interface or ip address.
 
 =item B<arp_lookup()>
 
-  Net::ARP::arp_lookup($dev,"192.168.1.1",$mac);
+  $mac = Net::ARP::arp_lookup($dev,"192.168.1.1");
 
   This looks up the MAC address for the ip address 192.168.1.1
   and stores it in the variable $mac. The return value is 
@@ -112,10 +123,12 @@ get the mac address of an ethernet interface or ip address.
 
 =head1 AUTHOR
 
- Bastian Ballmann [ Crazydj@chaostal.de ]
+ Bastian Ballmann [ Balle@chaostal.de ]
  http://www.datenterrorist.de
 
 =head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2004-2007 by Bastian Ballmann
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.8.1 or,

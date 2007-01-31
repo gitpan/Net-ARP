@@ -1,9 +1,9 @@
 /*
 Perl ARP Extension
-Create and send an arp packet
+Create and send an arp packets, lookup mac addresses
 
 Programmed by Bastian Ballmann
-Last update: 09.02.2006
+Last update: 31.01.2007
 
 This program is free software; you can redistribute 
 it and/or modify it under the terms of the 
@@ -50,12 +50,14 @@ send_packet(dev, sip, dip, smac, dmac, type)
 	  struct arphdr *arp = (struct arphdr *)(packet + sizeof(struct ether_header));
 	  u_short op;	
 
+          RETVAL = 1;
+
 	  // Are you root?
 	  uid = getuid();
 	  if(uid != 0) 
 	  { 
 	    printf("You must have UID 0 instead of %d.\n",uid); 
-	    exit(1); 
+	    exit(0);
 	  }
 
 	  // Initialize packet buffer 
@@ -94,65 +96,97 @@ send_packet(dev, sip, dip, smac, dmac, type)
 	  if(smac == NULL)
 	  {
 	    printf("Parameter smac is NULL! Terminating.\n");
-	    exit(1);
+	    RETVAL = 0;
 	  }
 
 	  if(dmac == NULL)
 	  {
 	    printf("Parameter dmac is NULL! Terminating.\n");
-	    exit(1);
+	    RETVAL = 0;
 	  }
 
           // Found a dollar sign?
 	  if(strchr(smac,36))
 	  {
 	    printf("Found a $ char in smac! Terminating.\n");
-	    exit(1);
+	    RETVAL = 0;
 	  }
 
 	  if(strchr(dmac,36))
 	  {
 	    printf("Found a $ char in dmac! Terminating.\n");
-	    exit(1);
+	    RETVAL = 0;
 	  }
 
-	  // Ethernet header
-	  memcpy(ethhdr->ether_dhost,(u_char *)ether_aton(dmac),ETHER_ADDR_LEN); // Destination MAC
-	  memcpy(ethhdr->ether_shost,(u_char *)ether_aton(smac),ETHER_ADDR_LEN); // Source MAC
-	  ethhdr->ether_type = htons(ETHERTYPE_ARP);                             // ARP protocol
+          if(ether_aton(smac) == NULL)
+          {
+            printf("Invalid source mac address! Terminating.\n");
+            RETVAL = 0;
+          }
 
-	  // ARP header
-	  arp->hw_type = htons(ARPHDR_ETHER);                                    // Hardware address type
-	  arp->proto_type = htons(ETH_P_IP);                                     // Protocol address type
-	  arp->ha_len = ETH_ALEN;                                                // Hardware address length
-	  arp->pa_len = IP_ALEN;                                                 // Protocol address length
-	  arp->opcode = htons(op);                                               // ARP operation
-	  memcpy(arp->source_add,(u_char *)ether_aton(smac),ETH_ALEN);           // Source MAC
-	  *(u_long *)arp->source_ip = inet_addr(sip);                            // Source IP
+          if(ether_aton(dmac) == NULL)
+          {
+            printf("Invalid destination mac address! Terminating.\n");
+            RETVAL = 0;
+          }
 
-	  if(strcmp(dmac,"ff:ff:ff:ff:ff:ff"))
-          	memcpy(arp->dest_add,(u_char *)ether_aton(dmac),ETH_ALEN);       // Destination MAC
+          // Check ips
+          if(inet_addr(sip) == INADDR_NONE)
+          {
+            printf("Invalid source ip address! Terminating.\n");
+            RETVAL = 0;
+          }
 
-	  *(u_long *)arp->dest_ip = inet_addr(dip);                              // Destination IP
+          if(inet_addr(dip) == INADDR_NONE)
+          {
+            printf("Invalid destination ip address! Terminating.\n");
+            RETVAL = 0;
+          }
+
+          // Construct and send packet
+          if(RETVAL != 0)
+          {
+	  	// Ethernet header
+	        memcpy(ethhdr->ether_dhost,(u_char *)ether_aton(dmac),ETHER_ADDR_LEN); // Destination MAC
+	        memcpy(ethhdr->ether_shost,(u_char *)ether_aton(smac),ETHER_ADDR_LEN); // Source MAC
+	        ethhdr->ether_type = htons(ETHERTYPE_ARP);                             // ARP protocol
+
+	        // ARP header
+	        arp->hw_type = htons(ARPHDR_ETHER);                                    // Hardware address type
+	        arp->proto_type = htons(ETH_P_IP);                                     // Protocol address type
+	        arp->ha_len = ETH_ALEN;                                                // Hardware address length
+	        arp->pa_len = IP_ALEN;                                                 // Protocol address length
+	        arp->opcode = htons(op);                                               // ARP operation
+	        memcpy(arp->source_add,(u_char *)ether_aton(smac),ETH_ALEN);           // Source MAC
+	        *(u_long *)arp->source_ip = inet_addr(sip);                            // Source IP
+
+	        if(strcmp(dmac,"ff:ff:ff:ff:ff:ff"))
+          		memcpy(arp->dest_add,(u_char *)ether_aton(dmac),ETH_ALEN);       // Destination MAC
+
+	         *(u_long *)arp->dest_ip = inet_addr(dip);                              // Destination IP
 
 
-	  // Run packet!! Run!
-	  // FreeBSD code
-	  if(SOCK_TYPE == SOCK_RAW)
-	  {
-	     send_packet_bsd(dev,packet,packetsize);	
-	  }
+	         // Run packet!! Run!
+	         // FreeBSD code
+	         if(SOCK_TYPE == SOCK_RAW)
+	         {
+	           RETVAL = send_packet_bsd(dev,packet,packetsize);	
+	         }
 
-	  // Linux code
-	  else
-	  {
-	     send_packet_linux(dev,packet,packetsize);
-	  }
+	         // Linux code
+	         else
+	         {
+	           RETVAL = send_packet_linux(dev,packet,packetsize);
+	         }
+          }
+
+          OUTPUT:
+          RETVAL
 
 char *
-get_mac(dev, mac)
+get_mac(dev)
 	unsigned char *dev;
-	unsigned char *mac;
+
 	CODE:
           char tmp[20] = "unknown";
 
@@ -165,17 +199,17 @@ get_mac(dev, mac)
 	    get_mac_linux(dev,tmp);
 	  }
 
-	  mac = tmp;
+	  RETVAL = tmp;
 
 	OUTPUT:
-	mac
+	RETVAL
 
 
 char *
-arp_lookup(dev, ip, mac)
+arp_lookup(dev, ip)
 	unsigned char *dev;
 	unsigned char *ip;
-	unsigned char *mac;
+
 	CODE:
 	  char tmp[20] = "unknown";
 
@@ -188,7 +222,8 @@ arp_lookup(dev, ip, mac)
 	    arp_lookup_linux(dev,ip,tmp);
 	  }
 
-	  mac = tmp;
+	  RETVAL = tmp;
 
-	OUTPUT:
-	mac
+          OUTPUT:
+          RETVAL
+

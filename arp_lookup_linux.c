@@ -4,7 +4,7 @@ Lookup the MAC address of an ip address
 Linux code
 
 Programmed by Bastian Ballmann and Alexander Mueller
-Last update: 09.02.2006
+Last update: 20.09.2006
 
 This program is free software; you can redistribute 
 it and/or modify it under the terms of the 
@@ -19,6 +19,7 @@ See the GNU General Public License for more details.
 */
 
 #include <stdio.h>
+#include <string.h>
 
 #define _PATH_PROCNET_ARP "/proc/net/arp"
 
@@ -37,8 +38,7 @@ int arp_lookup_linux(char *dev, char *ip, char *mac)
   else
     return -1;
 
-  if( (strlen(dev) == 0) ||
-      (strlen(ip) == 0) )
+  if(strlen(ip) == 0)
     return -1;
   
   if ((fp = fopen(_PATH_PROCNET_ARP, "r")) == NULL) {
@@ -56,7 +56,8 @@ int arp_lookup_linux(char *dev, char *ip, char *mac)
 	  
 	  if (num < 4)
 	    break;
-	  if (strcmp(dev, device) == 0 && strcmp(ip, ipaddr) == 0)
+
+          if ((strlen(dev) == 0 || strcmp(dev, device) == 0) && strcmp(ip, ipaddr) == 0)
 	    {
 	      strcpy(mac, hwa);
 	      break;

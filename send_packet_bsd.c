@@ -33,7 +33,7 @@ int send_packet_bsd(u_char *dev, u_char *packet, u_int packetsize)
 
   if( (strlen(dev) == 0) ||
       (packetsize == 0) )
-    return -1;
+    return 0;
 
   // Open a bpf device
   for(i = 0; i < 9; i++)
@@ -48,6 +48,7 @@ int send_packet_bsd(u_char *dev, u_char *packet, u_int packetsize)
   if(bpffd < 0)
     {
       perror("open bpf");
+      return 0;
     }
   else
     {
@@ -63,5 +64,5 @@ int send_packet_bsd(u_char *dev, u_char *packet, u_int packetsize)
       close(bpffd);
     }
 
-  return 0;
+  return 1;
 }

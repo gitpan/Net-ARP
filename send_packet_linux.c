@@ -18,6 +18,8 @@ FOR A PARTICULAR PURPOSE.
 See the GNU General Public License for more details. 
 */
 
+#include <string.h>
+#include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>      
 #include "arp.h"
@@ -27,25 +29,34 @@ int send_packet_linux(u_char *dev, u_char *packet, u_int packetsize)
   struct sockaddr addr;
   int sock;
 
-  if( (strlen(dev) == 0) ||
-      (packetsize == 0) )
-    return -1;
+  if(strlen(dev) == 0)
+  {
+    printf("dev is undefined. Terminating.\n");
+    return 0;
+  }
+
+  if(packetsize == 0)
+  {
+    printf("packetsize is zero. Terminating.\n");
+    return 0;
+  }
 
   // Create socket descriptor
   if( ( sock = socket(AF_INET,SOCK_TYPE,htons(ETH_P_ALL))) < 0 ) 
     { 
       perror("socket"); 
-      exit(1); 
+      return 0;
     }
 
   // Set dev and send the packet
   strncpy(addr.sa_data,dev,sizeof(addr.sa_data));
+
   if( (sendto(sock,packet,packetsize,0,&addr,sizeof(struct sockaddr))) < 0 )
     {
       perror("send");
-      exit(1);
+      return 0;
     }
 
   close(sock);
-  return 0;
+  return 1;
 }

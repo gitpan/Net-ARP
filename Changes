@@ -1,5 +1,17 @@
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
+Changes between 0.8 and 1.0
+
+API Change for get_mac() and arp_lookup() - see perldoc
+
+Updated test script (Net::Pcap not needed if unavailable)
+New test suite to test for unwanted input.
+
+Fixed possible segfault in send_packet() because of not
+checking src / dst ip values
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
 Changes between 0.7 and 0.8
 
 Fixed typo in return value of arp_lookup() and get_mac()
