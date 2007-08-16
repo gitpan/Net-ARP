@@ -1,5 +1,11 @@
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
+Changes between 1.0 and 1.0.1
+
+Segfault bugfix on 64 bit cpus by Paul Kolano
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
 Changes between 0.8 and 1.0
 
 API Change for get_mac() and arp_lookup() - see perldoc

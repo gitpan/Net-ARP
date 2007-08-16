@@ -55,5 +55,4 @@ struct arphdr {
    u_char dest_ip[IP_ALEN];     // dest ip
 };
 
-
-
+extern struct ether_addr *ether_aton (__const char *__asc) __THROW;
