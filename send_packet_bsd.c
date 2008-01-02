@@ -29,14 +29,14 @@ See the GNU General Public License for more details.
 int send_packet_bsd(u_char *dev, u_char *packet, u_int packetsize)
 {
   int bpffd, i;
-  char bpfdev[10];
+  char bpfdev[12];
 
   if( (strlen(dev) == 0) ||
       (packetsize == 0) )
     return 0;
 
   // Open a bpf device
-  for(i = 0; i < 9; i++)
+  for(i = 0; i < 512; i++)
     {
       sprintf(bpfdev,"/dev/bpf%d",i);
       if((bpffd = open(bpfdev,O_WRONLY)) > 0)

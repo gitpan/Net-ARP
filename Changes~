@@ -1,11 +1,5 @@
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-Changes between 1.0.1 and 1.0.2
-
-FreeBSD 7 bugfixes by Niels Bakker
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-
 Changes between 1.0 and 1.0.1
 
 Segfault bugfix on 64 bit cpus by Paul Kolano
