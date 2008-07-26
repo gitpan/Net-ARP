@@ -185,9 +185,8 @@ send_packet(dev, sip, dip, smac, dmac, type)
 
 char *
 get_mac(dev)
-	unsigned char *dev;
-
 	CODE:
+	  char dev[16];
           char tmp[20] = "unknown";
 
 	  if(SOCK_TYPE == SOCK_RAW)

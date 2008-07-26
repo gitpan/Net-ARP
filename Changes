@@ -1,5 +1,12 @@
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
+Changes between 1.0.2 and 1.0.3
+
+Fixed possible buffer overflow in get_mac_linux()
+FreeBSD 7 amd64 patches by mitsuru@riken.jp
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
 Changes between 1.0.1 and 1.0.2
 
 FreeBSD 7 bugfixes by Niels Bakker
