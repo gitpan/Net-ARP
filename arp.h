@@ -43,7 +43,7 @@ See the GNU General Public License for more details.
 #define IP_ALEN          4
 
 // ARP Header Struktur
-struct arphdr {
+struct my_arphdr {
    u_short hw_type;             // hardware type
    u_short proto_type;          // protocol type
    u_char ha_len;               // hardware address len

@@ -23,6 +23,9 @@ See the GNU General Public License for more details.
 #include <stdlib.h>
 #include <sys/ioctl.h>
 #include <net/ethernet.h>    
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <net/if.h>
 
 int get_mac_linux(u_char *dev, char *mac)

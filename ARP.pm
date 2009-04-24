@@ -87,6 +87,8 @@ I hope this decision is ok as long as we get a cleaner and more perlish API.
 This module can be used to create and send ARP packets and to
 get the mac address of an ethernet interface or ip address.
 
+=over
+
 =item B<send_packet()>
 
   Net::ARP::send_packet('lo',                 # Device
@@ -116,6 +118,8 @@ get the mac address of an ethernet interface or ip address.
   This looks up the MAC address for the ip address 192.168.1.1
   and stores it in the variable $mac. The return value is 
   "unknown" if the mac cannot be looked up.
+
+=back
 
 =head1 SEE ALSO
 

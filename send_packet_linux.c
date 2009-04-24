@@ -22,6 +22,11 @@ See the GNU General Public License for more details.
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>      
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <arpa/inet.h>
+#include <unistd.h>
 #include "arp.h"
 
 int send_packet_linux(u_char *dev, u_char *packet, u_int packetsize)

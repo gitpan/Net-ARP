@@ -27,6 +27,7 @@ See the GNU General Public License for more details.
 #include <string.h>          
 #include <errno.h>           
 #include <net/ethernet.h>    
+#include <netinet/ether.h>
 #include <net/if.h>
 #include <arpa/inet.h>       
 #include "arp.h"
@@ -44,11 +45,12 @@ send_packet(dev, sip, dip, smac, dmac, type)
 
 	CODE:
 	  int uid;
-	  unsigned int packetsize = sizeof(struct arphdr) + sizeof(struct ether_header);
+	  unsigned int packetsize = sizeof(struct my_arphdr) + sizeof(struct ether_header);
 	  unsigned char packet[packetsize];
 	  struct ether_header *ethhdr = (struct ether_header *)packet;
-	  struct arphdr *arp = (struct arphdr *)(packet + sizeof(struct ether_header));
+	  struct my_arphdr *arp = (struct my_arphdr *)(packet + sizeof(struct ether_header));
 	  u_short op;	
+	  in_addr_t ipaddr;
 
           RETVAL = 1;
 
@@ -158,12 +160,15 @@ send_packet(dev, sip, dip, smac, dmac, type)
 	        arp->pa_len = IP_ALEN;                                                 // Protocol address length
 	        arp->opcode = htons(op);                                               // ARP operation
 	        memcpy(arp->source_add,(u_char *)ether_aton(smac),ETH_ALEN);           // Source MAC
-	        *(u_long *)arp->source_ip = inet_addr(sip);                            // Source IP
+		ipaddr = inet_addr(sip);
+		memcpy(arp->source_ip, (u_char *)&ipaddr, IP_ALEN);		       // Source IP
 
 	        if(strcmp(dmac,"ff:ff:ff:ff:ff:ff"))
-          		memcpy(arp->dest_add,(u_char *)ether_aton(dmac),ETH_ALEN);       // Destination MAC
+          		memcpy(arp->dest_add,(u_char *)ether_aton(dmac),ETH_ALEN);     // Destination MAC
 
-	         *(u_long *)arp->dest_ip = inet_addr(dip);                              // Destination IP
+		ipaddr = inet_addr(dip);
+		memcpy(arp->dest_ip, (u_char *)&ipaddr, IP_ALEN);		       // Destination IP
+
 
 
 	         // Run packet!! Run!
@@ -185,8 +190,8 @@ send_packet(dev, sip, dip, smac, dmac, type)
 
 char *
 get_mac(dev)
+	unsigned char *dev;
 	CODE:
-	  char dev[16];
           char tmp[20] = "unknown";
 
 	  if(SOCK_TYPE == SOCK_RAW)

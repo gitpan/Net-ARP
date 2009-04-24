@@ -1,3 +1,8 @@
+Changes between 1.0.3 and 1.0.4
+
+fix FTBFS due to unaligned assignment problems by Niko Tyni <ntyni@debian.org>
+get_mac unknown device fix by Franck Joncourt <franck.mail@dthconnex.com>
+
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 Changes between 1.0.2 and 1.0.3
