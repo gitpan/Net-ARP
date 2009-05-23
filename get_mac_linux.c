@@ -21,30 +21,29 @@ See the GNU General Public License for more details.
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/types.h>
 #include <sys/ioctl.h>
 #include <net/ethernet.h>    
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <net/if.h>
+#include "arp.h"
 
-int get_mac_linux(u_char *dev, char *mac)
+int get_mac_linux(const char *dev, char *mac)
 {
-  int sock;
+  int    sock;
   struct ifreq iface;
-  struct sockaddr_in *addr;
-  struct ether_addr ether;
-  
-  if(strlen(mac) > 0)
-    strcpy(mac,"unknown");
-  else
+
+  if ( (mac == NULL) || (dev == NULL) )
     return -1;
 
-  if(strlen(dev) == 0)
-    return -1;
-  
-  strcpy(iface.ifr_name,dev);
-  
+  /* Set hardware address as unknown */
+  strncpy(mac,"unknown", HEX_HW_ADDR_LEN);
+  mac[HEX_HW_ADDR_LEN-1] = '\0';
+
+  /* Copy device name into the ifreq strcture so that we can look for its
+   * hardware address through an ioctl request */
+  strncpy(iface.ifr_name, dev, IFNAMSIZ);
+  iface.ifr_name[IFNAMSIZ-1] = '\0';
+
   // Open a socket
   if((sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
     {

@@ -30,20 +30,18 @@ See the GNU General Public License for more details.
 #include <net/if_dl.h>
 #include <net/if_types.h>
 #include <net/ethernet.h>
+#include "arp.h"
 
-int get_mac_bsd(u_char *dev, char *mac)
+int get_mac_bsd(const char *dev, char *mac)
 {
   struct ifaddrs *iface, *iffirst;
 
-  if(strlen(mac) > 0)
-    strcpy(mac,"unknown");
-  else
+  if ( (mac == NULL) || (dev == NULL) )
     return -1;
 
-  if(strlen(dev) == 0)
-    return -1;
+  strncpy(mac,"unknown", HEX_HW_ADDR_LEN);
+  mac[HEX_HW_ADDR_LEN-1] = '\0';
 
-  strcpy(mac,"unknown");
   if (getifaddrs(&iface))
     return -1;
 

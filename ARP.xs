@@ -36,12 +36,12 @@ MODULE = Net::ARP		PACKAGE = Net::ARP
 
 int
 send_packet(dev, sip, dip, smac, dmac, type)
-	unsigned char *dev;
-	unsigned char *sip;
-	unsigned char *dip;
-	unsigned char *smac;
-	unsigned char *dmac;
-	unsigned char *type;
+	const char *dev;
+	const char *sip;
+	const char *dip;
+	const char *smac;
+	const char *dmac;
+	const char *type;
 
 	CODE:
 	  int uid;
@@ -190,9 +190,9 @@ send_packet(dev, sip, dip, smac, dmac, type)
 
 char *
 get_mac(dev)
-	unsigned char *dev;
+	const char *dev;
 	CODE:
-          char tmp[20] = "unknown";
+          char tmp[HEX_HW_ADDR_LEN];
 
 	  if(SOCK_TYPE == SOCK_RAW)
 	  {
@@ -211,11 +211,11 @@ get_mac(dev)
 
 char *
 arp_lookup(dev, ip)
-	unsigned char *dev;
-	unsigned char *ip;
+	const char *dev;
+	const char *ip;
 
 	CODE:
-	  char tmp[20] = "unknown";
+	  char tmp[HEX_HW_ADDR_LEN];
 
 	  if(SOCK_TYPE == SOCK_RAW)
 	  {

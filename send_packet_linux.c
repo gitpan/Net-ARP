@@ -20,16 +20,14 @@ See the GNU General Public License for more details.
 
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>      
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <arpa/inet.h>
-#include <unistd.h>
 #include "arp.h"
 
-int send_packet_linux(u_char *dev, u_char *packet, u_int packetsize)
+int send_packet_linux(const char *dev, u_char *packet, u_int packetsize)
 {
   struct sockaddr addr;
   int sock;

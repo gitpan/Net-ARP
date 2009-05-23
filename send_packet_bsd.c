@@ -26,7 +26,7 @@ See the GNU General Public License for more details.
 #include <net/if.h>
 #include "arp.h"
 
-int send_packet_bsd(u_char *dev, u_char *packet, u_int packetsize)
+int send_packet_bsd(const char *dev, u_char *packet, u_int packetsize)
 {
   int bpffd, i;
   char bpfdev[12];

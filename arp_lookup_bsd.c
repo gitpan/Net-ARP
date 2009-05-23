@@ -28,25 +28,23 @@ See the GNU General Public License for more details.
 #include <netinet/if_ether.h>
 #include <arpa/inet.h>
 #include <sys/sysctl.h>
+#include <sys/types.h>
+#include "arp.h"
 
 #define ROUNDUP(a) \
         ((a) > 0 ? (1 + (((a) - 1) | (sizeof(long) - 1))) : sizeof(long))
 
-int arp_lookup_bsd(u_char *dev, u_char *ip, char *mac)
+int arp_lookup_bsd(const char *dev, const char *ip, char *mac)
 {
   int mib[6];
   size_t needed;
   char *lim, *buf, *next;
 
-  if(strlen(mac) > 0)
-    strcpy(mac,"unknown");
-  else
+  if ( (mac == NULL) || (dev == NULL) || (ip == NULL) )
     return -1;
 
-  if(strlen(ip) == 0)
-    return -1;
-
-  strcpy(mac,"unknown");
+  strncpy(mac,"unknown", HEX_HW_ADDR_LEN);
+  mac[HEX_HW_ADDR_LEN-1] = '\0';
 
   mib[0] = CTL_NET;
   mib[1] = PF_ROUTE;
