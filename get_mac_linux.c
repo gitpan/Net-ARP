@@ -32,7 +32,7 @@ int get_mac_linux(const char *dev, char *mac)
   int    sock;
   struct ifreq iface;
 
-  if ( (mac == NULL) || (dev == NULL) )
+  if ( !strlen(mac) || !strlen(dev) )
     return -1;
 
   /* Set hardware address as unknown */

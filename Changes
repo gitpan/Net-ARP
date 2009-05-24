@@ -1,5 +1,11 @@
 Changes between 1.0.3 and 1.0.5
 
+new linux arp lookup via ioctl by Franck Joncourt <franck.mail@dthconnex.com>
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Changes between 1.0.3 and 1.0.5
+
 buffer overflow patch by Franck Joncourt <franck.mail@dthconnex.com>
 
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

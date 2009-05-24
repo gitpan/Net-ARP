@@ -6,67 +6,100 @@ Linux code
 Programmed by Bastian Ballmann and Alexander Mueller
 Last update: 20.09.2006
 
-This program is free software; you can redistribute 
-it and/or modify it under the terms of the 
-GNU General Public License version 2 as published 
+This program is free software; you can redistribute
+it and/or modify it under the terms of the
+GNU General Public License version 2 as published
 by the Free Software Foundation.
 
-This program is distributed in the hope that it will 
-be useful, but WITHOUT ANY WARRANTY; without even 
-the implied warranty of MERCHANTABILITY or FITNESS 
-FOR A PARTICULAR PURPOSE. 
-See the GNU General Public License for more details. 
+This program is distributed in the hope that it will
+be useful, but WITHOUT ANY WARRANTY; without even
+the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
 */
 
+#include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
-#include "arp.h"
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <net/if_arp.h>
 
-#define _PATH_PROCNET_ARP "/proc/net/arp"
-
-int arp_lookup_linux(const char *dev, const char *ip, char *mac)
+/*
+ * Search for a hardware address linked to an IP address on a device
+ *
+ * @device:  network interface name we are going to query
+ * @ip:      ip address (IPv4 numbers-and-dots notation) whose hardware address
+ *           is going to be looked for
+ * @hw_addr: buffer containing the hardware mac_address
+ *
+ * \returns 0 if a hardware address has been found. @mac is set accordingly as
+ *            a null terminated string.
+ *          1 if an error occured
+ */
+int
+arp_lookup_linux (
+        const char *device, const char *ip, char *hw_addr)
 {
-  FILE *fp;
-  char ipaddr[100];
-  char line[200];
-  char hwa[100];
-  char mask[100];
-  char device[100];
-  int num, type, flags;
+    int                 s;
+    unsigned char       err;
+    struct in_addr      ipaddr;
+    struct arpreq       areq;
+    struct sockaddr_in *sin;
 
-  if ( (mac == NULL) || (dev == NULL) || (ip == NULL) )
-    return -1;
+    err = 1;
 
-  strncpy(mac,"unknown", HEX_HW_ADDR_LEN);
-  mac[HEX_HW_ADDR_LEN-1] = '\0';
+    /* A device name must be a null terminated string whose length is less
+     * than 16 bytes */
+    if ( !strlen(device) || (strlen(device) >= 16) )
+        fprintf(stderr, "No valid device name found.\n");
 
-  if ((fp = fopen(_PATH_PROCNET_ARP, "r")) == NULL) {
-    perror(_PATH_PROCNET_ARP);
-    return -1;
-  }
-  
-  /* Bypass header -- read until newline */
-  if (fgets(line, sizeof(line), fp) != (char *) NULL)
-    {
-      /* Read the ARP cache entries. */
-      while (fgets(line, sizeof(line), fp))
-	{
-	  num = sscanf(line, "%s 0x%x 0x%x %100s %100s %100s\n", ipaddr, &type, &flags, hwa, mask, device);
-	  
-	  if (num < 4)
-	    break;
+    /* Is there a buffer allocated to store the hardware address? */
+    else if (hw_addr == NULL)
+        fprintf(stderr, "No memory allocated to store the hardware address.\n");
 
-	  else if ( ((strlen(dev) == 0) || (strcmp(dev, device) == 0))
-	      && (strcmp(ip, ipaddr) == 0) )
-	    {
-	      strncpy(mac, hwa, HEX_HW_ADDR_LEN);
-	      mac[HEX_HW_ADDR_LEN-1] = '\0';
-	      break;
-	    }
-	}
+    /* Make sure the ip address is valid */
+    else if ( !strlen(ip) || (inet_aton(ip, &ipaddr) == 0) )
+        fprintf(stderr, "Invalid ip address.\n");
+
+    /* Create the socket */
+    else if ((s = socket(AF_INET, SOCK_DGRAM, 0)) == -1)
+        perror("Socket");
+
+    else {
+
+        /* Set up the protocol address */
+        memset(&areq, 0, sizeof(areq));
+        sin = (struct sockaddr_in *) &areq.arp_pa;
+        sin->sin_family = AF_INET;
+        sin->sin_addr = ipaddr;
+
+        /* Set up the hardware address */
+        sin = (struct sockaddr_in *) &areq.arp_ha;
+        sin->sin_family = ARPHRD_ETHER;
+        strcpy(areq.arp_dev, device);
+
+        /* Carry out the request */
+        if (ioctl(s, SIOCGARP, &areq) == -1)
+            perror("SIOCGARP");
+
+        else {
+            sprintf(hw_addr, "%02x:%02x:%02x:%02x:%02x:%02x",
+                        areq.arp_ha.sa_data[0] & 0xFF,
+                        areq.arp_ha.sa_data[1] & 0xFF,
+                        areq.arp_ha.sa_data[2] & 0xFF,
+                        areq.arp_ha.sa_data[3] & 0xFF,
+                        areq.arp_ha.sa_data[4] & 0xFF,
+                        areq.arp_ha.sa_data[5] & 0xFF);
+            err = 0;
+        }
+
+	/* Close the current socket */
+	close(s);
     }
 
-    fclose(fp);
-    return 0;
+    return err;
 }

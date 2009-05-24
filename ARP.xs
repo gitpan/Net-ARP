@@ -192,7 +192,7 @@ char *
 get_mac(dev)
 	const char *dev;
 	CODE:
-          char tmp[HEX_HW_ADDR_LEN];
+          char tmp[HEX_HW_ADDR_LEN] = "unknown";
 
 	  if(SOCK_TYPE == SOCK_RAW)
 	  {
@@ -215,7 +215,7 @@ arp_lookup(dev, ip)
 	const char *ip;
 
 	CODE:
-	  char tmp[HEX_HW_ADDR_LEN];
+	  char tmp[HEX_HW_ADDR_LEN] = "unknown";
 
 	  if(SOCK_TYPE == SOCK_RAW)
 	  {
