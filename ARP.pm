@@ -132,11 +132,9 @@ get the mac address of an ethernet interface or ip address.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2004-2007 by Bastian Ballmann
+Copyright (C) 2004-2009 by Bastian Ballmann
 
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself, either Perl version 5.8.1 or,
-at your option, any later version of Perl 5 you may have available.
+License: GPLv2
 
 
 =cut

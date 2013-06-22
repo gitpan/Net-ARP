@@ -38,15 +38,6 @@
  * 
  */
 
-/*
- * In order for a Perl extension module to be as portable as possible
- * across differing versions of Perl itself, certain steps need to be taken.
- * Including this header is the first major one, then using dTHR is all the
- * appropriate places and using a PL_ prefix to refer to global Perl
- * variables is the second.
- *
- */
-
 
 /* If you use one of a few functions that were not present in earlier
  * versions of Perl, please add a define before the inclusion of ppport.h
